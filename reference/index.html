@@ -1,0 +1,843 @@
+<!DOCTYPE html>
+<html lang="fr-CA">
+<head>
+<!-- ============================================================
+  RESTAURANT LE CÈDRE — refonte démo (single-file, zéro dépendance)
+  À REMPLACER AVANT MISE EN LIGNE :
+  1. Tous les PRIX du menu (placeholders réalistes — le site actuel n'en affiche aucun)
+  2. Les HEURES D'OUVERTURE (placeholders — absentes du site actuel) : ici + JSON-LD
+  3. Les URLS exactes DoorDash / Uber Eats des deux succursales
+  4. Le lien d'avis Google (mettre le shortlink du profil d'entreprise)
+  5. Vérifier adresses / téléphones / courriels contre les vrais
+  6. Photos réelles des plats (le design fonctionne sans, mais 3-4 photos = mieux)
+============================================================ -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Restaurant Le Cèdre | Cuisine libanaise à Québec — Sainte-Foy &amp; L'Ancienne-Lorette</title>
+<meta name="description" content="Cuisine libanaise authentique à Québec : shawarma, shish taouk, falafels et grillades. Deux succursales — Sainte-Foy et L'Ancienne-Lorette. Sur place, à emporter ou en livraison.">
+<link rel="canonical" href="https://restaurantlecedre.ca/">
+<meta name="theme-color" content="#123A2E">
+
+<!-- Open Graph -->
+<meta property="og:type" content="restaurant">
+<meta property="og:locale" content="fr_CA">
+<meta property="og:site_name" content="Restaurant Le Cèdre">
+<meta property="og:title" content="Restaurant Le Cèdre — Cuisine libanaise à Québec">
+<meta property="og:description" content="Shawarma, shish taouk, falafels et grillades. Deux succursales : Sainte-Foy et L'Ancienne-Lorette. Sur place, à emporter ou en livraison.">
+<meta property="og:url" content="https://restaurantlecedre.ca/">
+
+<!-- Icône : cèdre stylisé (SVG inline, aucun fichier externe) -->
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%23123A2E'/%3E%3Cg fill='%23D8A24A'%3E%3Cpath d='M32 8 20 20h24z'/%3E%3Cpath d='M32 16 14 30h36z'/%3E%3Cpath d='M32 26 10 42h44z'/%3E%3Crect x='29' y='42' width='6' height='12' rx='1'/%3E%3C/g%3E%3C/svg%3E">
+
+<!-- Polices : 2 familles, chargées avec swap -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Young+Serif&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<!-- Données structurées : les deux succursales (Google local) -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Restaurant",
+      "@id": "https://restaurantlecedre.ca/#sainte-foy",
+      "name": "Restaurant Le Cèdre — Sainte-Foy",
+      "servesCuisine": ["Libanaise", "Moyen-orientale"],
+      "priceRange": "$$",
+      "url": "https://restaurantlecedre.ca/",
+      "menu": "https://restaurantlecedre.ca/#menu",
+      "telephone": "+1-418-000-0000",
+      "email": "info@restaurantlecedre.com",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "[Adresse à confirmer], chemin Sainte-Foy",
+        "addressLocality": "Québec",
+        "addressRegion": "QC",
+        "addressCountry": "CA"
+      },
+      "openingHoursSpecification": [
+        { "@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday","Tuesday","Wednesday"], "opens": "11:00", "closes": "21:00" },
+        { "@type": "OpeningHoursSpecification", "dayOfWeek": ["Thursday","Friday","Saturday"], "opens": "11:00", "closes": "22:00" },
+        { "@type": "OpeningHoursSpecification", "dayOfWeek": "Sunday", "opens": "12:00", "closes": "21:00" }
+      ]
+    },
+    {
+      "@type": "Restaurant",
+      "@id": "https://restaurantlecedre.ca/#ancienne-lorette",
+      "name": "Restaurant Le Cèdre — L'Ancienne-Lorette",
+      "servesCuisine": ["Libanaise", "Moyen-orientale"],
+      "priceRange": "$$",
+      "url": "https://restaurantlecedre.ca/",
+      "menu": "https://restaurantlecedre.ca/#menu",
+      "telephone": "+1-418-000-0000",
+      "email": "info@restaurantlecedre.com",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "[Adresse à confirmer]",
+        "addressLocality": "L'Ancienne-Lorette",
+        "addressRegion": "QC",
+        "addressCountry": "CA"
+      },
+      "openingHoursSpecification": [
+        { "@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday","Tuesday","Wednesday"], "opens": "11:00", "closes": "21:00" },
+        { "@type": "OpeningHoursSpecification", "dayOfWeek": ["Thursday","Friday","Saturday"], "opens": "11:00", "closes": "22:00" },
+        { "@type": "OpeningHoursSpecification", "dayOfWeek": "Sunday", "opens": "12:00", "closes": "21:00" }
+      ]
+    }
+  ]
+}
+</script>
+
+<style>
+/* ==========================================================
+   Jetons — palette « table de cèdre » :
+   fond vert cèdre profond, panneaux menu parchemin,
+   accent laiton (CTA + prix), grenade en micro-accent.
+   ========================================================== */
+:root{
+  --cedre:#123A2E;
+  --cedre-fonce:#0C2A21;
+  --cedre-ligne:#2A5445;
+  --parchemin:#F5EBD8;
+  --parchemin-fonce:#EADCC2;
+  --encre:#211B12;
+  --encre-douce:#5C5344;
+  --laiton:#D8A24A;
+  --laiton-clair:#E7BE77;
+  --grenade:#A93226;
+  --blanc-chaud:#FBF6EA;
+  --ff-display:"Young Serif", Georgia, "Times New Roman", serif;
+  --ff-body:"Figtree", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --wrap:1120px;
+  --r:14px;
+}
+
+*,*::before,*::after{ box-sizing:border-box; margin:0; padding:0; }
+html{ scroll-behavior:smooth; scroll-padding-top:5.5rem; }
+body{
+  font-family:var(--ff-body);
+  background:var(--cedre);
+  color:var(--blanc-chaud);
+  line-height:1.6;
+  font-size:1.0625rem;
+  -webkit-font-smoothing:antialiased;
+}
+
+img,svg{ display:block; max-width:100%; }
+a{ color:inherit; }
+ul{ list-style:none; }
+
+.wrap{ width:min(var(--wrap), 100% - 2.5rem); margin-inline:auto; }
+
+/* Accessibilité ------------------------------------------- */
+.skip{
+  position:absolute; left:-999px; top:0; z-index:100;
+  background:var(--laiton); color:var(--encre);
+  padding:.6rem 1rem; border-radius:0 0 var(--r) 0; font-weight:600;
+}
+.skip:focus{ left:0; }
+:focus-visible{ outline:3px solid var(--laiton); outline-offset:2px; }
+.visually-hidden{
+  position:absolute; width:1px; height:1px; overflow:hidden;
+  clip:rect(0 0 0 0); white-space:nowrap;
+}
+
+/* Bandeau utilitaire --------------------------------------- */
+.topbar{
+  background:var(--cedre-fonce);
+  font-size:.85rem; letter-spacing:.02em;
+  border-bottom:1px solid var(--cedre-ligne);
+}
+.topbar .wrap{
+  display:flex; justify-content:space-between; gap:1rem;
+  padding-block:.45rem; flex-wrap:wrap;
+}
+.topbar a{ color:var(--laiton-clair); text-decoration:none; font-weight:600; }
+.topbar a:hover{ text-decoration:underline; }
+
+/* Navigation ------------------------------------------------ */
+.nav{
+  position:sticky; top:0; z-index:50;
+  background:var(--cedre);
+  transition:box-shadow .25s ease;
+}
+.nav.est-collee{ box-shadow:0 6px 24px rgba(0,0,0,.35); }
+.nav .wrap{
+  display:flex; align-items:center; justify-content:space-between;
+  padding-block:.85rem; gap:1rem;
+}
+.marque{
+  display:flex; align-items:center; gap:.65rem;
+  text-decoration:none; font-family:var(--ff-display);
+  font-size:1.35rem; color:var(--blanc-chaud);
+}
+.marque svg{ width:38px; height:38px; }
+.nav-liens{ display:flex; align-items:center; gap:1.6rem; }
+.nav-liens a{
+  text-decoration:none; font-weight:600; font-size:.95rem;
+  color:var(--blanc-chaud); opacity:.85;
+}
+.nav-liens a:hover{ opacity:1; color:var(--laiton-clair); }
+
+.btn{
+  display:inline-flex; align-items:center; gap:.5rem;
+  background:var(--laiton); color:var(--encre);
+  font-weight:700; text-decoration:none;
+  padding:.7rem 1.25rem; border-radius:999px;
+  border:2px solid var(--laiton);
+  transition:transform .15s ease, background .15s ease;
+}
+.btn:hover{ background:var(--laiton-clair); transform:translateY(-1px); }
+.btn--contour{
+  background:transparent; color:var(--laiton-clair);
+  border-color:var(--laiton);
+}
+.btn--contour:hover{ background:rgba(216,162,74,.12); }
+.btn--grand{ padding:.9rem 1.7rem; font-size:1.05rem; }
+
+.nav-bascule{
+  display:none; background:none; border:2px solid var(--cedre-ligne);
+  border-radius:10px; padding:.5rem .6rem; cursor:pointer; color:var(--blanc-chaud);
+}
+
+/* Héros ------------------------------------------------------ */
+.heros{ position:relative; overflow:hidden; }
+.motif{
+  position:absolute; inset:0; opacity:.055; pointer-events:none;
+}
+.heros .wrap{
+  position:relative; text-align:center;
+  padding-block:5.5rem 4.5rem;
+  display:flex; flex-direction:column; align-items:center; gap:1.4rem;
+}
+.heros .embleme{ width:88px; height:88px; }
+.sur-titre{
+  font-size:.85rem; font-weight:700; letter-spacing:.22em;
+  text-transform:uppercase; color:var(--laiton-clair);
+}
+h1{
+  font-family:var(--ff-display); font-weight:400;
+  font-size:clamp(2.7rem, 7vw, 4.6rem);
+  line-height:1.05; max-width:16ch;
+}
+.heros p.accroche{
+  max-width:52ch; font-size:1.15rem; opacity:.92;
+}
+.heros-cta{ display:flex; gap:.9rem; flex-wrap:wrap; justify-content:center; margin-top:.4rem; }
+.heros-infos{
+  display:flex; gap:2.2rem; flex-wrap:wrap; justify-content:center;
+  margin-top:1.6rem; padding-top:1.4rem;
+  border-top:1px solid var(--cedre-ligne);
+  font-size:.92rem; opacity:.9;
+}
+.heros-infos strong{ color:var(--laiton-clair); }
+
+/* Ornement étoile + titres de section ----------------------- */
+.entete-section{
+  text-align:center; display:flex; flex-direction:column;
+  align-items:center; gap:.7rem; margin-bottom:2.6rem;
+}
+.entete-section .etoile{ width:26px; height:26px; }
+.entete-section h2{
+  font-family:var(--ff-display); font-weight:400;
+  font-size:clamp(1.9rem, 4vw, 2.6rem); line-height:1.15;
+}
+.entete-section p{ max-width:56ch; opacity:.85; }
+
+/* Menu ------------------------------------------------------- */
+.section{ padding-block:4.5rem; }
+.section--menu{ background:var(--cedre); }
+.menu-panneau{
+  background:var(--parchemin); color:var(--encre);
+  border-radius:calc(var(--r) + 6px);
+  padding:clamp(1.5rem, 4vw, 3.2rem);
+  box-shadow:0 24px 60px rgba(0,0,0,.35);
+}
+.menu-note{
+  text-align:center; font-size:.95rem; color:var(--encre-douce);
+  max-width:60ch; margin:0 auto 2.4rem;
+}
+.menu-note strong{ color:var(--grenade); }
+.menu-cats{
+  display:flex; flex-wrap:wrap; gap:.6rem; justify-content:center;
+  margin-bottom:2.6rem;
+}
+.menu-cats a{
+  text-decoration:none; font-weight:600; font-size:.9rem;
+  padding:.45rem 1rem; border-radius:999px;
+  border:1.5px solid var(--parchemin-fonce);
+  background:var(--blanc-chaud); color:var(--encre);
+}
+.menu-cats a:hover{ border-color:var(--laiton); background:#fff; }
+
+.menu-groupe{ margin-bottom:3rem; }
+.menu-groupe:last-child{ margin-bottom:0; }
+.menu-groupe h3{
+  font-family:var(--ff-display); font-weight:400; font-size:1.6rem;
+  display:flex; align-items:center; gap:.8rem; margin-bottom:.4rem;
+}
+.menu-groupe h3 .etoile{ width:18px; height:18px; flex:none; }
+.menu-groupe .sous-note{
+  font-size:.92rem; color:var(--encre-douce); margin-bottom:1.4rem;
+}
+.menu-liste{
+  display:grid; grid-template-columns:1fr 1fr;
+  gap:1.15rem 3rem;
+}
+.plat{ break-inside:avoid; }
+.plat-ligne{
+  display:flex; align-items:baseline; gap:.6rem;
+}
+.plat-nom{ font-weight:700; font-size:1.02rem; }
+.plat-points{
+  flex:1; border-bottom:2px dotted #C9B893;
+  transform:translateY(-4px);
+}
+.plat-prix{
+  font-weight:700; color:var(--grenade);
+  font-variant-numeric:tabular-nums; white-space:nowrap;
+}
+.plat-desc{ font-size:.92rem; color:var(--encre-douce); margin-top:.15rem; }
+.epice{
+  display:inline-block; width:9px; height:9px; border-radius:50%;
+  background:var(--grenade); margin-left:.35rem;
+  vertical-align:baseline;
+}
+
+/* Bandes vertes (à propos, avis) ----------------------------- */
+.section--recit .wrap{
+  display:grid; grid-template-columns:1.1fr .9fr; gap:3.5rem;
+  align-items:center;
+}
+.section--recit h2{
+  font-family:var(--ff-display); font-weight:400;
+  font-size:clamp(1.9rem, 4vw, 2.5rem); margin-bottom:1.1rem;
+}
+.section--recit p{ opacity:.9; margin-bottom:1rem; max-width:58ch; }
+.recit-embleme{
+  display:flex; justify-content:center;
+}
+.recit-embleme svg{ width:min(300px, 70%); height:auto; opacity:.9; }
+
+/* Cartes livraison ------------------------------------------- */
+.grille-3{
+  display:grid; grid-template-columns:repeat(3, 1fr); gap:1.4rem;
+}
+.carte{
+  background:var(--cedre-fonce); border:1px solid var(--cedre-ligne);
+  border-radius:var(--r); padding:1.8rem 1.6rem;
+  display:flex; flex-direction:column; gap:.7rem;
+}
+.carte h3{
+  font-family:var(--ff-display); font-weight:400; font-size:1.3rem;
+}
+.carte p{ font-size:.95rem; opacity:.85; flex:1; }
+.carte .btn{ align-self:flex-start; }
+
+/* Succursales ------------------------------------------------- */
+.grille-2{ display:grid; grid-template-columns:1fr 1fr; gap:1.6rem; }
+.succursale{
+  background:var(--parchemin); color:var(--encre);
+  border-radius:var(--r); padding:2rem 1.9rem;
+}
+.succursale h3{
+  font-family:var(--ff-display); font-weight:400; font-size:1.45rem;
+  margin-bottom:.3rem;
+}
+.succursale .adresse{ color:var(--encre-douce); margin-bottom:1rem; }
+.succursale .tel{
+  display:inline-block; font-weight:700; font-size:1.15rem;
+  color:var(--grenade); text-decoration:none; margin-bottom:1.2rem;
+}
+.succursale .tel:hover{ text-decoration:underline; }
+.heures{ width:100%; border-collapse:collapse; font-size:.93rem; margin-bottom:1.4rem; }
+.heures th{
+  text-align:left; font-weight:600; padding:.3rem 0; color:var(--encre);
+}
+.heures td{ text-align:right; padding:.3rem 0; color:var(--encre-douce);
+  font-variant-numeric:tabular-nums; }
+.heures tr + tr{ border-top:1px solid var(--parchemin-fonce); }
+.succursale .actions{ display:flex; gap:.7rem; flex-wrap:wrap; }
+.btn--sombre{
+  background:var(--cedre); border-color:var(--cedre); color:var(--blanc-chaud);
+}
+.btn--sombre:hover{ background:var(--cedre-fonce); }
+
+/* Avis --------------------------------------------------------- */
+.section--avis{ text-align:center; }
+.section--avis .wrap{ display:flex; flex-direction:column; align-items:center; gap:1.1rem; }
+.section--avis h2{
+  font-family:var(--ff-display); font-weight:400;
+  font-size:clamp(1.7rem, 3.5vw, 2.2rem); max-width:22ch;
+}
+.etoiles-avis{ color:var(--laiton); letter-spacing:.2em; font-size:1.3rem; }
+
+/* Pied de page -------------------------------------------------- */
+footer{
+  background:var(--cedre-fonce); border-top:1px solid var(--cedre-ligne);
+  padding-block:2.6rem; font-size:.9rem;
+}
+footer .wrap{
+  display:flex; justify-content:space-between; gap:1.5rem; flex-wrap:wrap;
+  align-items:center;
+}
+footer .marque{ font-size:1.1rem; }
+footer .marque svg{ width:30px; height:30px; }
+footer nav{ display:flex; gap:1.4rem; flex-wrap:wrap; }
+footer a{ text-decoration:none; opacity:.8; }
+footer a:hover{ opacity:1; text-decoration:underline; }
+footer .droits{ opacity:.6; width:100%; text-align:center; margin-top:1rem; }
+
+/* Apparitions au défilement -------------------------------------- */
+.reveler{ opacity:0; transform:translateY(18px);
+  transition:opacity .6s ease, transform .6s ease; }
+.reveler.visible{ opacity:1; transform:none; }
+
+/* Réactif ---------------------------------------------------------- */
+@media (max-width:900px){
+  .menu-liste{ grid-template-columns:1fr; }
+  .section--recit .wrap{ grid-template-columns:1fr; gap:2rem; }
+  .grille-3{ grid-template-columns:1fr; }
+  .grille-2{ grid-template-columns:1fr; }
+}
+@media (max-width:760px){
+  .nav-bascule{ display:block; }
+  .nav-liens{
+    position:absolute; top:100%; left:0; right:0;
+    background:var(--cedre-fonce); flex-direction:column;
+    padding:1.2rem 1.5rem 1.6rem; gap:1.1rem;
+    border-bottom:1px solid var(--cedre-ligne);
+    display:none;
+  }
+  .nav-liens.ouvert{ display:flex; }
+  .topbar .wrap{ justify-content:center; text-align:center; }
+}
+@media (prefers-reduced-motion:reduce){
+  html{ scroll-behavior:auto; }
+  .reveler{ opacity:1; transform:none; transition:none; }
+  .btn{ transition:none; }
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#contenu">Aller au contenu</a>
+
+<!-- Bandeau utilitaire : l'info que tout client cherche en premier -->
+<div class="topbar">
+  <div class="wrap">
+    <span>Deux succursales à Québec — Sainte-Foy &amp; L'Ancienne-Lorette</span>
+    <span>Commande à emporter : <a href="tel:+14180000000">418 000-0000</a></span>
+  </div>
+</div>
+
+<!-- Navigation -->
+<header class="nav" id="haut">
+  <div class="wrap">
+    <a class="marque" href="#haut" aria-label="Restaurant Le Cèdre — retour en haut">
+      <svg viewBox="0 0 64 64" aria-hidden="true">
+        <g fill="#D8A24A">
+          <path d="M32 6 20 18h24z"/>
+          <path d="M32 14 14 28h36z"/>
+          <path d="M32 24 10 40h44z"/>
+          <rect x="29" y="40" width="6" height="14" rx="1"/>
+        </g>
+      </svg>
+      Le Cèdre
+    </a>
+
+    <button class="nav-bascule" aria-expanded="false" aria-controls="liens-principaux">
+      <span class="visually-hidden">Ouvrir le menu de navigation</span>
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true">
+        <path d="M4 7h16M4 12h16M4 17h16"/>
+      </svg>
+    </button>
+
+    <nav id="liens-principaux" class="nav-liens" aria-label="Navigation principale">
+      <a href="#menu">Menu</a>
+      <a href="#a-propos">À propos</a>
+      <a href="#livraison">Livraison</a>
+      <a href="#succursales">Succursales</a>
+      <a class="btn" href="tel:+14180000000">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6.6 10.8c1.5 2.9 3.7 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.2.4 2.4.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.6 21 3 13.4 3 4c0-.6.4-1 1-1h3.4c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.4 0 .8-.2 1l-2.2 2.2z"/></svg>
+        Commander
+      </a>
+    </nav>
+  </div>
+</header>
+
+<main id="contenu">
+
+<!-- Héros : la thèse — cuisine libanaise, deux adresses, commande directe -->
+<section class="heros">
+  <svg class="motif" aria-hidden="true" preserveAspectRatio="none" width="100%" height="100%">
+    <defs>
+      <pattern id="lattis" width="72" height="72" patternUnits="userSpaceOnUse">
+        <g fill="none" stroke="#F5EBD8" stroke-width="1">
+          <path d="M36 4 44 28 68 36 44 44 36 68 28 44 4 36 28 28Z"/>
+          <circle cx="36" cy="36" r="6"/>
+        </g>
+      </pattern>
+    </defs>
+    <rect width="100%" height="100%" fill="url(#lattis)"/>
+  </svg>
+
+  <div class="wrap">
+    <svg class="embleme reveler" viewBox="0 0 64 64" aria-hidden="true">
+      <g fill="#D8A24A">
+        <path d="M32 4 19 17h26z"/>
+        <path d="M32 13 13 28h38z"/>
+        <path d="M32 24 8 41h48z"/>
+        <rect x="29" y="41" width="6" height="15" rx="1"/>
+      </g>
+    </svg>
+    <p class="sur-titre reveler">Restaurant libanais · Québec</p>
+    <h1 class="reveler">La cuisine du cèdre, servie comme à la maison</h1>
+    <p class="accroche reveler">Shawarma tranché à la commande, grillades sur charbon, falafels croustillants et mezzés préparés chaque matin. Sur place, à emporter ou livré chez vous.</p>
+    <div class="heros-cta reveler">
+      <a class="btn btn--grand" href="#menu">Voir le menu</a>
+      <a class="btn btn--grand btn--contour" href="#livraison">Commander en ligne</a>
+    </div>
+    <div class="heros-infos reveler">
+      <span><strong>Sainte-Foy</strong> · chemin Sainte-Foy</span>
+      <span><strong>L'Ancienne-Lorette</strong> · boul. Wilfrid-Hamel</span>
+      <span><strong>Ouvert aujourd'hui</strong> · 11 h à 21 h</span>
+    </div>
+  </div>
+</section>
+
+<!-- Menu : texte réel, indexable, avec prix — le cœur de la refonte -->
+<section class="section section--menu" id="menu">
+  <div class="wrap">
+    <div class="entete-section reveler">
+      <svg class="etoile" viewBox="0 0 24 24" aria-hidden="true">
+        <path fill="#D8A24A" d="M12 0l2.6 7.4L22 8.6l-5.7 5 1.7 7.7L12 17.6l-6 3.7 1.7-7.7L2 8.6l7.4-1.2z" transform="rotate(22 12 12)"/>
+      </svg>
+      <h2>Le menu</h2>
+      <p>Recettes familiales libanaises, préparées sur place. Les plats marqués d'un point <span class="epice" role="img" aria-label="épicé"></span> sont relevés.</p>
+    </div>
+
+    <div class="menu-panneau reveler">
+      <p class="menu-note"><strong>Version démonstration :</strong> prix et liste complète à valider avec la maison avant publication.</p>
+
+      <nav class="menu-cats" aria-label="Catégories du menu">
+        <a href="#cat-entrees">Entrées</a>
+        <a href="#cat-salades">Salades</a>
+        <a href="#cat-sandwichs">Sandwichs</a>
+        <a href="#cat-assiettes">Assiettes</a>
+        <a href="#cat-desserts">Desserts &amp; breuvages</a>
+      </nav>
+
+      <div class="menu-groupe" id="cat-entrees">
+        <h3><svg class="etoile" viewBox="0 0 24 24" aria-hidden="true"><path fill="#A93226" d="M12 0l2.6 7.4L22 8.6l-5.7 5 1.7 7.7L12 17.6l-6 3.7 1.7-7.7L2 8.6l7.4-1.2z" transform="rotate(22 12 12)"/></svg>Entrées</h3>
+        <div class="menu-liste">
+          <div class="plat">
+            <div class="plat-ligne"><span class="plat-nom">Hommos</span><span class="plat-points"></span><span class="plat-prix">7,50&nbsp;$</span></div>
+            <p class="plat-desc">Purée de pois chiches, tahini, citron et huile d'olive, servie avec pain pita.</p>
+          </div>
+          <div class="plat">
+            <div class="plat-ligne"><span class="plat-nom">Baba ghannouj</span><span class="plat-points"></span><span class="plat-prix">8,25&nbsp;$</span></div>
+            <p class="plat-desc">Caviar d'aubergine grillée au charbon, tahini et citron.</p>
+          </div>
+          <div class="plat">
+            <div class="plat-ligne"><span class="plat-nom">Feuilles de vigne (6)</span><span class="plat-points"></span><span class="plat-prix">8,75&nbsp;$</span></div>
+            <p class="plat-desc">Farcies au riz, tomates et fines herbes, arrosées d'huile d'olive.</p>
+          </div>
+          <div class="plat">
+            <div class="plat-ligne"><span class="plat-nom">Kebbé (2)</span><span class="plat-points"></span><span class="plat-prix">7,95&nbsp;$</span></div>
+            <p class="plat-desc">Croquettes de bœuf et boulgour farcies aux oignons et noix de pin.</p>
+          </div>
+          <div class="plat">
+            <div class="plat-ligne"><span class="plat-nom">Falafels (4)</span><span class="plat-points"></span><span class="plat-prix">6,95&nbsp;$</span></div>
+            <p class="plat-desc">Boulettes de pois chiches et fèves, herbes fraîches, sauce tahini.</p>
+          </div>
+          <div class="plat">
+            <div class="plat-ligne"><span class="plat-nom">Assiette de mezzés à partager</span><span class="plat-points"></span><span class="plat-prix">16,95&nbsp;$</span></div>
+            <p class="plat-desc">Hommos, baba ghannouj, feuilles de vigne, falafels et pita chaud.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="menu-groupe" id="cat-salades">
+        <h3><svg class="etoile" viewBox="0 0 24 24" aria-hidden="true"><path fill="#A93226" d="M12 0l2.6 7.4L22 8.6l-5.7 5 1.7 7.7L12 17.6l-6 3.7 1.7-7.7L2 8.6l7.4-1.2z" transform="rotate(22 12 12)"/></svg>Salades</h3>
+        <div class="menu-liste">
+          <div class="plat">
+            <div class="plat-ligne"><span class="plat-nom">Taboulé</span><span class="plat-points"></span><span class="plat-prix">8,50&nbsp;$</span></div>
+            <p class="plat-desc">Persil frais, boulgour, tomates, menthe, citron et huile d'olive.</p>
+          </div>
+          <div class="plat">
+            <div class="plat-ligne"><span class="plat-nom">Fattouche</span><span class="plat-points"></span><span class="plat-prix">8,50&nbsp;$</span></div>
+            <p class="plat-desc">Laitue, tomates, concombres, radis, sumac et croustilles de pita.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="menu-groupe" id="cat-sandwichs">
+        <h3><svg class="etoile" viewBox="0 0 24 24" aria-hidden="true"><path fill="#A93226" d="M12 0l2.6 7.4L22 8.6l-5.7 5 1.7 7.7L12 17.6l-6 3.7 1.7-7.7L2 8.6l7.4-1.2z" transform="rotate(22 12 12)"/></svg>Sandwichs</h3>
+        <p class="sous-note">Roulés dans un pain pita frais. En trio : ajoutez 4,75&nbsp;$ pour patates et breuvage.</p>
+        <div class="menu-liste">
+          <div class="plat">
+            <div class="plat-ligne"><span class="plat-nom">Shawarma au poulet</span><span class="plat-points"></span><span class="plat-prix">9,95&nbsp;$</span></div>
+            <p class="plat-desc">Poulet mariné tranché à la broche, sauce à l'ail, cornichons et navets marinés.</p>
+          </div>
+          <div class="plat">
+            <div class="plat-ligne"><span class="plat-nom">Shawarma au bœuf</span><span class="plat-points"></span><span class="plat-prix">10,50&nbsp;$</span></div>
+            <p class="plat-desc">Bœuf mariné aux épices libanaises, tahini, tomates et oignons.</p>
+          </div>
+          <div class="plat">
+            <div class="plat-ligne"><span class="plat-nom">Shish taouk</span><span class="plat-points"></span><span class="plat-prix">9,95&nbsp;$</span></div>
+            <p class="plat-desc">Brochette de poulet grillée au charbon, sauce à l'ail crémeuse.</p>
+          </div>
+          <div class="plat">
+            <div class="plat-ligne"><span class="plat-nom">Kafta<span class="epice" role="img" aria-label="épicé"></span></span><span class="plat-points"></span><span class="plat-prix">9,95&nbsp;$</span></div>
+            <p class="plat-desc">Bœuf haché grillé au persil et aux oignons, légèrement relevé.</p>
+          </div>
+          <div class="plat">
+            <div class="plat-ligne"><span class="plat-nom">Falafel (végétarien)</span><span class="plat-points"></span><span class="plat-prix">8,95&nbsp;$</span></div>
+            <p class="plat-desc">Falafels croustillants, tahini, persil, tomates et navets marinés.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="menu-groupe" id="cat-assiettes">
+        <h3><svg class="etoile" viewBox="0 0 24 24" aria-hidden="true"><path fill="#A93226" d="M12 0l2.6 7.4L22 8.6l-5.7 5 1.7 7.7L12 17.6l-6 3.7 1.7-7.7L2 8.6l7.4-1.2z" transform="rotate(22 12 12)"/></svg>Assiettes</h3>
+        <p class="sous-note">Servies avec riz ou patates, salade et sauce à l'ail ou hommos.</p>
+        <div class="menu-liste">
+          <div class="plat">
+            <div class="plat-ligne"><span class="plat-nom">Assiette shawarma poulet</span><span class="plat-points"></span><span class="plat-prix">17,95&nbsp;$</span></div>
+          </div>
+          <div class="plat">
+            <div class="plat-ligne"><span class="plat-nom">Assiette shawarma bœuf</span><span class="plat-points"></span><span class="plat-prix">18,95&nbsp;$</span></div>
+          </div>
+          <div class="plat">
+            <div class="plat-ligne"><span class="plat-nom">Assiette shawarma mixte</span><span class="plat-points"></span><span class="plat-prix">19,95&nbsp;$</span></div>
+          </div>
+          <div class="plat">
+            <div class="plat-ligne"><span class="plat-nom">Assiette shish taouk</span><span class="plat-points"></span><span class="plat-prix">18,50&nbsp;$</span></div>
+          </div>
+          <div class="plat">
+            <div class="plat-ligne"><span class="plat-nom">Brochettes de kafta<span class="epice" role="img" aria-label="épicé"></span></span><span class="plat-points"></span><span class="plat-prix">18,50&nbsp;$</span></div>
+          </div>
+          <div class="plat">
+            <div class="plat-ligne"><span class="plat-nom">Grillades mixtes Le Cèdre</span><span class="plat-points"></span><span class="plat-prix">23,95&nbsp;$</span></div>
+            <p class="plat-desc">Shish taouk, kafta et shawarma sur un même plat — la table du chef.</p>
+          </div>
+          <div class="plat">
+            <div class="plat-ligne"><span class="plat-nom">Assiette végétarienne</span><span class="plat-points"></span><span class="plat-prix">16,95&nbsp;$</span></div>
+            <p class="plat-desc">Falafels, hommos, feuilles de vigne, taboulé et pita chaud.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="menu-groupe" id="cat-desserts">
+        <h3><svg class="etoile" viewBox="0 0 24 24" aria-hidden="true"><path fill="#A93226" d="M12 0l2.6 7.4L22 8.6l-5.7 5 1.7 7.7L12 17.6l-6 3.7 1.7-7.7L2 8.6l7.4-1.2z" transform="rotate(22 12 12)"/></svg>Desserts &amp; breuvages</h3>
+        <div class="menu-liste">
+          <div class="plat">
+            <div class="plat-ligne"><span class="plat-nom">Baklava (2 morceaux)</span><span class="plat-points"></span><span class="plat-prix">4,50&nbsp;$</span></div>
+            <p class="plat-desc">Pâte filo, noix et sirop parfumé à la fleur d'oranger.</p>
+          </div>
+          <div class="plat">
+            <div class="plat-ligne"><span class="plat-nom">Café libanais</span><span class="plat-points"></span><span class="plat-prix">3,25&nbsp;$</span></div>
+          </div>
+          <div class="plat">
+            <div class="plat-ligne"><span class="plat-nom">Thé à la menthe</span><span class="plat-points"></span><span class="plat-prix">2,95&nbsp;$</span></div>
+          </div>
+          <div class="plat">
+            <div class="plat-ligne"><span class="plat-nom">Boissons gazeuses &amp; jus</span><span class="plat-points"></span><span class="plat-prix">2,50&nbsp;$</span></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- À propos -->
+<section class="section section--recit" id="a-propos">
+  <div class="wrap">
+    <div class="reveler">
+      <h2>Une table libanaise, deux adresses à Québec</h2>
+      <p>Au Cèdre, tout part du charbon et du pain chaud. Le shawarma tourne lentement sur la broche, les brochettes grillent à la commande et les mezzés sont préparés chaque matin, comme dans les cuisines familiales du Liban.</p>
+      <p>Que ce soit pour un dîner rapide en semaine, un souper en famille ou une commande à emporter, l'équipe vous accueille à Sainte-Foy et à L'Ancienne-Lorette.</p>
+      <a class="btn" href="#succursales">Nous trouver</a>
+    </div>
+    <div class="recit-embleme reveler" aria-hidden="true">
+      <svg viewBox="0 0 200 200">
+        <circle cx="100" cy="100" r="96" fill="none" stroke="#2A5445" stroke-width="1.5"/>
+        <circle cx="100" cy="100" r="78" fill="none" stroke="#2A5445" stroke-width="1"/>
+        <g fill="#D8A24A">
+          <path d="M100 34 74 60h52z"/>
+          <path d="M100 52 62 82h76z"/>
+          <path d="M100 74 52 110h96z"/>
+          <rect x="94" y="110" width="12" height="34" rx="2"/>
+        </g>
+        <path d="M56 156h88" stroke="#D8A24A" stroke-width="3" stroke-linecap="round"/>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<!-- Livraison / commande -->
+<section class="section" id="livraison">
+  <div class="wrap">
+    <div class="entete-section reveler">
+      <svg class="etoile" viewBox="0 0 24 24" aria-hidden="true">
+        <path fill="#D8A24A" d="M12 0l2.6 7.4L22 8.6l-5.7 5 1.7 7.7L12 17.6l-6 3.7 1.7-7.7L2 8.6l7.4-1.2z" transform="rotate(22 12 12)"/>
+      </svg>
+      <h2>Commander</h2>
+      <p>Le plus avantageux pour vous — et pour nous : appelez directement. Nous préparons votre commande pendant que vous vous déplacez.</p>
+    </div>
+    <div class="grille-3">
+      <div class="carte reveler">
+        <h3>À emporter</h3>
+        <p>Commandez par téléphone et passez la prendre — prête en 15 à 20 minutes, sans frais de plateforme.</p>
+        <a class="btn" href="tel:+14180000000">Appeler pour commander</a>
+      </div>
+      <div class="carte reveler">
+        <h3>DoorDash</h3>
+        <p>Livraison à domicile via DoorDash pour les deux succursales.</p>
+        <!-- TODO : remplacer par l'URL exacte de la boutique DoorDash -->
+        <a class="btn btn--contour" href="https://www.doordash.com/" rel="noopener" target="_blank">Commander sur DoorDash</a>
+      </div>
+      <div class="carte reveler">
+        <h3>Uber Eats</h3>
+        <p>Livraison à domicile via Uber Eats pour les deux succursales.</p>
+        <!-- TODO : remplacer par l'URL exacte de la boutique Uber Eats -->
+        <a class="btn btn--contour" href="https://www.ubereats.com/ca-fr" rel="noopener" target="_blank">Commander sur Uber Eats</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Succursales -->
+<section class="section" id="succursales">
+  <div class="wrap">
+    <div class="entete-section reveler">
+      <svg class="etoile" viewBox="0 0 24 24" aria-hidden="true">
+        <path fill="#D8A24A" d="M12 0l2.6 7.4L22 8.6l-5.7 5 1.7 7.7L12 17.6l-6 3.7 1.7-7.7L2 8.6l7.4-1.2z" transform="rotate(22 12 12)"/>
+      </svg>
+      <h2>Nos succursales</h2>
+      <p>Mêmes recettes, même accueil — choisissez l'adresse la plus proche.</p>
+    </div>
+    <div class="grille-2">
+      <div class="succursale reveler">
+        <h3>Sainte-Foy</h3>
+        <p class="adresse"><!-- TODO : numéro civique exact -->[Adresse à confirmer], chemin Sainte-Foy, Québec (QC)</p>
+        <a class="tel" href="tel:+14180000000">418 000-0000</a>
+        <table class="heures">
+          <caption class="visually-hidden">Heures d'ouverture — Sainte-Foy</caption>
+          <tr><th scope="row">Lundi – Mercredi</th><td>11 h – 21 h</td></tr>
+          <tr><th scope="row">Jeudi – Samedi</th><td>11 h – 22 h</td></tr>
+          <tr><th scope="row">Dimanche</th><td>12 h – 21 h</td></tr>
+        </table>
+        <div class="actions">
+          <a class="btn btn--sombre" href="https://www.google.com/maps/search/?api=1&query=Restaurant+Le+C%C3%A8dre+Sainte-Foy+Qu%C3%A9bec" rel="noopener" target="_blank">Itinéraire</a>
+          <a class="btn btn--sombre" href="tel:+14180000000">Appeler</a>
+        </div>
+      </div>
+      <div class="succursale reveler">
+        <h3>L'Ancienne-Lorette</h3>
+        <p class="adresse"><!-- TODO : numéro civique exact -->[Adresse à confirmer], L'Ancienne-Lorette (QC)</p>
+        <a class="tel" href="tel:+14180000000">418 000-0000</a>
+        <table class="heures">
+          <caption class="visually-hidden">Heures d'ouverture — L'Ancienne-Lorette</caption>
+          <tr><th scope="row">Lundi – Mercredi</th><td>11 h – 21 h</td></tr>
+          <tr><th scope="row">Jeudi – Samedi</th><td>11 h – 22 h</td></tr>
+          <tr><th scope="row">Dimanche</th><td>12 h – 21 h</td></tr>
+        </table>
+        <div class="actions">
+          <a class="btn btn--sombre" href="https://www.google.com/maps/search/?api=1&query=Restaurant+Le+C%C3%A8dre+L%27Ancienne-Lorette" rel="noopener" target="_blank">Itinéraire</a>
+          <a class="btn btn--sombre" href="tel:+14180000000">Appeler</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Avis -->
+<section class="section section--avis">
+  <div class="wrap reveler">
+    <div class="etoiles-avis" aria-hidden="true">★★★★★</div>
+    <h2>Vous avez aimé votre repas? Dites-le à Québec.</h2>
+    <!-- TODO : remplacer par le shortlink d'avis du profil d'entreprise Google -->
+    <a class="btn" href="https://www.google.com/maps/search/?api=1&query=Restaurant+Le+C%C3%A8dre+Qu%C3%A9bec" rel="noopener" target="_blank">Laisser un avis Google</a>
+  </div>
+</section>
+
+</main>
+
+<footer id="contact">
+  <div class="wrap">
+    <a class="marque" href="#haut">
+      <svg viewBox="0 0 64 64" aria-hidden="true">
+        <g fill="#D8A24A">
+          <path d="M32 6 20 18h24z"/>
+          <path d="M32 14 14 28h36z"/>
+          <path d="M32 24 10 40h44z"/>
+          <rect x="29" y="40" width="6" height="14" rx="1"/>
+        </g>
+      </svg>
+      Le Cèdre
+    </a>
+    <nav aria-label="Navigation de pied de page">
+      <a href="#menu">Menu</a>
+      <a href="#livraison">Livraison</a>
+      <a href="#succursales">Succursales</a>
+      <a href="mailto:info@restaurantlecedre.com">info@restaurantlecedre.com</a>
+    </nav>
+    <p class="droits">© <span id="annee">2026</span> Restaurant Le Cèdre — Tous droits réservés.</p>
+  </div>
+</footer>
+
+<script>
+(function(){
+  "use strict";
+
+  // Année courante au pied de page
+  var annee = document.getElementById("annee");
+  if (annee) { annee.textContent = new Date().getFullYear(); }
+
+  // Bascule du menu mobile
+  var bascule = document.querySelector(".nav-bascule");
+  var liens = document.getElementById("liens-principaux");
+  if (bascule && liens) {
+    bascule.addEventListener("click", function(){
+      var ouvert = liens.classList.toggle("ouvert");
+      bascule.setAttribute("aria-expanded", ouvert ? "true" : "false");
+    });
+    liens.addEventListener("click", function(e){
+      if (e.target.tagName === "A") {
+        liens.classList.remove("ouvert");
+        bascule.setAttribute("aria-expanded", "false");
+      }
+    });
+  }
+
+  // Ombre sur la barre de navigation au défilement
+  var nav = document.querySelector(".nav");
+  var majNav = function(){
+    nav.classList.toggle("est-collee", window.scrollY > 8);
+  };
+  majNav();
+  window.addEventListener("scroll", majNav, { passive: true });
+
+  // Apparitions au défilement (désactivées si mouvement réduit)
+  var reduit = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var elems = document.querySelectorAll(".reveler");
+  if (reduit || !("IntersectionObserver" in window)) {
+    elems.forEach(function(el){ el.classList.add("visible"); });
+  } else {
+    var obs = new IntersectionObserver(function(entrees){
+      entrees.forEach(function(entree){
+        if (entree.isIntersecting) {
+          entree.target.classList.add("visible");
+          obs.unobserve(entree.target);
+        }
+      });
+    }, { threshold: 0.12 });
+    elems.forEach(function(el){ obs.observe(el); });
+  }
+})();
+</script>
+</body>
+</html>
