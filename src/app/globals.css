@@ -1,1 +1,79 @@
 @import "tailwindcss";
+
+/* ============================================================
+   Design tokens — palette « table de cèdre »
+   Dark cedar-green page, warm parchment menu panels,
+   brass CTAs/ornaments, pomegranate red for prices & spice.
+   ============================================================ */
+@theme {
+  --color-cedre: #123a2e;
+  --color-cedre-fonce: #0c2a21;
+  --color-cedre-ligne: #2a5445;
+  --color-parchemin: #f5ebd8;
+  --color-parchemin-fonce: #eadcc2;
+  --color-encre: #211b12;
+  --color-encre-douce: #5c5344;
+  --color-laiton: #d8a24a;
+  --color-laiton-clair: #e7be77;
+  --color-grenade: #a93226;
+  --color-blanc-chaud: #fbf6ea;
+
+  --font-display: var(--font-young-serif), Georgia, "Times New Roman", serif;
+  --font-body: var(--font-figtree), system-ui, -apple-system, "Segoe UI",
+    sans-serif;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    /* Keep anchor targets clear of the sticky nav */
+    scroll-padding-top: 5.5rem;
+  }
+
+  body {
+    background-color: var(--color-cedre);
+    color: var(--color-blanc-chaud);
+    font-family: var(--font-body);
+    font-size: 1.0625rem;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  :focus-visible {
+    outline: 3px solid var(--color-laiton);
+    outline-offset: 2px;
+  }
+}
+
+@layer components {
+  /* Scroll-triggered fade-up, driven by the Reveal client component */
+  .reveal {
+    opacity: 0;
+    transform: translateY(18px);
+    transition:
+      opacity 0.6s ease,
+      transform 0.6s ease;
+  }
+
+  .reveal.is-visible {
+    opacity: 1;
+    transform: none;
+  }
+
+  /* Tabular figures so menu prices align */
+  .price {
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
