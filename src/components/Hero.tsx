@@ -2,7 +2,6 @@ import Link from "next/link";
 import { site } from "@/content/site";
 import { CedarMark, LatticePattern } from "@/components/Ornaments";
 import { ImageSlot } from "@/components/ImageSlot";
-import { Reveal } from "@/components/Reveal";
 
 export function Hero() {
   return (
@@ -12,7 +11,7 @@ export function Hero() {
         <ImageSlot slot="hero" fill priority sizes="100vw" className="image-cover" />
       </div>
       <div className="wrap hero-inner">
-        <Reveal className="hero-content">
+        <div className="hero-content hero-load">
           <CedarMark className="hero-mark" title={site.name} />
           <p className="eyebrow">Restaurant libanais · Québec</p>
           <h1>La cuisine du cèdre, servie comme à la maison</h1>
@@ -37,10 +36,12 @@ export function Hero() {
             ))}
             <div>
               <dt>Aujourd&apos;hui</dt>
-              <dd>Heures à confirmer</dd>
+              <dd>
+                {site.hours[0].open} – {site.hours[0].close}
+              </dd>
             </div>
           </dl>
-        </Reveal>
+        </div>
       </div>
     </section>
   );

@@ -272,6 +272,10 @@ a {
   max-width: 680px;
 }
 
+.hero-load {
+  animation: hero-load 0.7s ease both;
+}
+
 .hero-mark {
   width: 88px;
   height: 88px;
@@ -835,6 +839,16 @@ h1 {
   transform: none;
 }
 
+@keyframes hero-load {
+  from {
+    transform: translateY(14px);
+  }
+
+  to {
+    transform: none;
+  }
+}
+
 @media (max-width: 900px) {
   .hero,
   .hero-inner {
@@ -962,9 +976,11 @@ h1 {
   }
 
   .btn,
+  .hero-load,
   .reveal,
   .site-nav {
     transition: none;
+    animation: none;
   }
 
   .reveal {
