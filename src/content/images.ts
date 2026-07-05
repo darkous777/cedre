@@ -26,13 +26,13 @@ export const images = {
   hero: {
     file: "/images/opt/hero-1600.webp",
     fileSmall: "/images/opt/hero-800.webp",
-    alt: "Shawarma de bœuf tranché sur broche verticale",
+    alt: "Comptoir de mezzés, falafels et assiettes du Restaurant Le Cèdre",
     width: 1600,
     height: 900,
     credit: {
-      photographer: "engin akyurt",
-      sourceUrl: "https://unsplash.com/photos/9Lsxip60s20",
-      license: UNSPLASH_LICENSE,
+      photographer: "Restaurant Le Cèdre",
+      sourceUrl: "http://restaurantlecedre.ca/images/banner01.jpg",
+      license: "Actif client existant",
     },
   },
   mezze: {
@@ -110,13 +110,13 @@ export const images = {
   salle: {
     file: "/images/opt/salle-1600.webp",
     fileSmall: "/images/opt/salle-800.webp",
-    alt: "Salle à manger chaleureuse à l'éclairage tamisé",
+    alt: "Salle à manger du Restaurant Le Cèdre avec banquettes et décor libanais",
     width: 1600,
     height: 1067,
     credit: {
-      photographer: "Oliver Guhr",
-      sourceUrl: "https://unsplash.com/photos/EjHiN2KxTO4",
-      license: UNSPLASH_LICENSE,
+      photographer: "Restaurant Le Cèdre",
+      sourceUrl: "http://restaurantlecedre.ca/resto2.jpg",
+      license: "Actif client existant",
     },
   },
 } as const satisfies Record<string, ImageAsset>;

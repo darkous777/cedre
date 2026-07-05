@@ -9,7 +9,7 @@ export function LocationCard({ location }: { location: SiteLocation }) {
     <article className="location-card">
       <h3>{location.label}</h3>
       <p className="address">
-        {location.street}, {location.city} ({location.region})
+        {location.street}, {location.city} ({location.region}) {location.postalCode}
       </p>
       <a className="phone" href={`tel:${location.phoneHref}`}>
         {location.phoneDisplay}

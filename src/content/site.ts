@@ -1,31 +1,34 @@
 // Single source of truth for business facts.
-// Every TODO below is a client placeholder — tracked in TODO.md. Do not invent values.
+// Verified contact/delivery facts come from the live legacy site.
+// Remaining TODO values are tracked in TODO.md. Do not invent values.
 export const site = {
   name: "Restaurant Le Cèdre",
   domain: "https://restaurantlecedre.ca",
   description:
     "Cuisine libanaise authentique à Québec : shawarma, shish taouk, falafels et grillades. Deux succursales — Sainte-Foy et L'Ancienne-Lorette.",
-  email: "info@restaurantlecedre.com", // TODO confirm — domain mismatch (.com vs .ca) on current site
+  email: "info@restaurantlecedre.com",
   locations: [
     {
       id: "sainte-foy",
       label: "Sainte-Foy",
-      street: "[ADRESSE À CONFIRMER], chemin Sainte-Foy", // TODO
+      street: "2750 Chemin Ste-Foy",
       city: "Québec",
       region: "QC",
-      phoneDisplay: "418 000-0000", // TODO — placeholder, do not invent
-      phoneHref: "+14180000000",
-      mapsQuery: "Restaurant Le Cèdre Sainte-Foy Québec",
+      postalCode: "G1V 1V6",
+      phoneDisplay: "581 300-3002",
+      phoneHref: "+15813003002",
+      mapsQuery: "2750 Chemin Ste-Foy, Québec, QC G1V 1V6",
     },
     {
       id: "ancienne-lorette",
       label: "L'Ancienne-Lorette",
-      street: "[ADRESSE À CONFIRMER]", // TODO
+      street: "1875 Rue Notre-Dame",
       city: "L'Ancienne-Lorette",
       region: "QC",
-      phoneDisplay: "418 000-0000", // TODO
-      phoneHref: "+14180000000",
-      mapsQuery: "Restaurant Le Cèdre L'Ancienne-Lorette",
+      postalCode: "G2E 3E1",
+      phoneDisplay: "581 300-1080",
+      phoneHref: "+15813001080",
+      mapsQuery: "1875 Rue Notre-Dame, L'Ancienne-Lorette, QC G2E 3E1",
     },
   ],
   hours: [
@@ -58,10 +61,12 @@ export const site = {
     },
   ],
   ordering: {
-    doordash: "https://www.doordash.com/", // TODO exact store URL
-    ubereats: "https://www.ubereats.com/ca-fr", // TODO exact store URL
+    doordash: "https://www.doordash.com/store/restaurant-le-c%C3%A8dre-qu%C3%A9bec-937697/",
+    ubereats: "https://www.ubereats.com/ca/store/restaurant-le-cedre/tVsBQlQtSGuFNsfJCAi81Q",
     googleReview:
-      "https://www.google.com/maps/search/?api=1&query=Restaurant+Le+C%C3%A8dre+Qu%C3%A9bec", // TODO replace with GBP review shortlink
+      "https://www.google.ca/search?q=restaurant+le+c%C3%A8dre",
+    tripadvisor:
+      "https://fr.tripadvisor.ca/Restaurant_Review-g155033-d9451540-Reviews-Le_Cedre_Restaurant_Libanais-Quebec_City_Quebec.html",
   },
 } as const;
 

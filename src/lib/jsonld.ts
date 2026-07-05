@@ -23,6 +23,7 @@ export function restaurantJsonLd() {
         streetAddress: location.street,
         addressLocality: location.city,
         addressRegion: location.region,
+        postalCode: location.postalCode,
         addressCountry: "CA",
       },
       openingHoursSpecification: site.hours.map((slot) => ({

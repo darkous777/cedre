@@ -31,7 +31,7 @@ export function Hero() {
             {site.locations.map((location) => (
               <div key={location.id}>
                 <dt>{location.label}</dt>
-                <dd>{location.city}</dd>
+                <dd>{location.street}</dd>
               </div>
             ))}
             <div>
