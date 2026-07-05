@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { images, type ImageKey } from "@/content/images";
+import { images, type ImageAsset, type ImageKey } from "@/content/images";
 
 export function ImageSlot({
   slot,
@@ -14,12 +14,13 @@ export function ImageSlot({
   sizes?: string;
   fill?: boolean;
 }) {
-  const image = images[slot];
+  const image: ImageAsset = images[slot];
+  const source = fill ? (image.fileSmall ?? image.file) : image.file;
 
   if (fill) {
     return (
       <Image
-        src={image.file}
+        src={source}
         alt={image.alt}
         fill
         priority={priority}
@@ -31,7 +32,7 @@ export function ImageSlot({
 
   return (
     <Image
-      src={image.file}
+      src={source}
       alt={image.alt}
       width={image.width}
       height={image.height}
