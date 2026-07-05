@@ -1,6 +1,15 @@
 import Image from "next/image";
 import { images, type ImageAsset, type ImageKey } from "@/content/images";
 
+const isGitHubPages = process.env.GITHUB_PAGES === "true";
+const repositoryName = process.env.GITHUB_REPOSITORY?.split("/")[1] ?? "cedre";
+const basePath = isGitHubPages ? `/${repositoryName}` : "";
+
+function withBasePath(src: string) {
+  if (!basePath || !src.startsWith("/")) return src;
+  return `${basePath}${src}`;
+}
+
 export function ImageSlot({
   slot,
   className = "",
@@ -15,7 +24,7 @@ export function ImageSlot({
   fill?: boolean;
 }) {
   const image: ImageAsset = images[slot];
-  const source = fill ? (image.fileSmall ?? image.file) : image.file;
+  const source = withBasePath(fill ? (image.fileSmall ?? image.file) : image.file);
 
   if (fill) {
     return (
