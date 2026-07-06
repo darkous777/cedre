@@ -1,7 +1,9 @@
+import Image from "next/image";
 import { site } from "@/content/site";
 import { ImageSlot } from "@/components/ImageSlot";
 import { Reveal } from "@/components/Reveal";
 import { SectionHeading } from "@/components/SectionHeading";
+import { withBasePath } from "@/lib/basePath";
 
 export function OrderCards() {
   return (
@@ -27,7 +29,13 @@ export function OrderCards() {
             </Reveal>
             <Reveal className="order-card">
               <h3 className="order-card-brand">
-                <img className="brand-logo brand-logo-ddash" src="/images/brands/doordash.svg" alt="" width={26} height={26} />
+                <Image
+                  className="brand-logo brand-logo-ddash"
+                  src={withBasePath("/images/brands/doordash.svg")}
+                  alt=""
+                  width={26}
+                  height={26}
+                />
                 DoorDash
               </h3>
               <p>Livraison à domicile via DoorDash pour les deux succursales.</p>
@@ -37,7 +45,13 @@ export function OrderCards() {
             </Reveal>
             <Reveal className="order-card">
               <h3 className="order-card-brand">
-                <img className="brand-logo brand-logo-uber" src="/images/brands/ubereats.svg" alt="" width={26} height={26} />
+                <Image
+                  className="brand-logo brand-logo-uber"
+                  src={withBasePath("/images/brands/ubereats.svg")}
+                  alt=""
+                  width={26}
+                  height={26}
+                />
                 Uber Eats
               </h3>
               <p>Livraison à domicile via Uber Eats pour les deux succursales.</p>
