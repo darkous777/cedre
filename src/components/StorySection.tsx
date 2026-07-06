@@ -3,7 +3,7 @@ import { Reveal } from "@/components/Reveal";
 
 export function StorySection() {
   return (
-    <section className="section story-section" id="a-propos">
+    <section className="section story-section section-clair" id="a-propos">
       <div className="wrap story-grid">
         <Reveal>
           <h2>Une table libanaise, deux adresses à Québec</h2>

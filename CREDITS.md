@@ -8,7 +8,7 @@ Les mêmes informations sont reprises dans `src/content/images.ts`.
 
 | Slot | Photographe | Source | Licence |
 |---|---|---|---|
-| `hero` | Restaurant Le Cèdre | <http://restaurantlecedre.ca/images/banner01.jpg> | Actif client existant |
+| `hero` | Restaurant Le Cèdre | `public/images/client-originals/bann.png` | Actif client existant |
 | `mezze` | Louis Hansel | <https://unsplash.com/photos/IgGFGxULsWg> | Unsplash License |
 | `grillades` | Muha Ajjan | <https://unsplash.com/photos/nsr_303jGyY> | Unsplash License |
 | `falafel` | Anton | <https://unsplash.com/photos/illep4eI8HQ> | Unsplash License |
@@ -23,3 +23,11 @@ Les mêmes informations sont reprises dans `src/content/images.ts`.
 photos de salle et éléments graphiques mirrorés depuis le site actuel. Ce sont
 les actifs du client, conservés ici pour référence et remplacement progressif
 des photos temporaires.
+
+## Galerie « Nos plats »
+
+Les 12 photos de la section galerie (`public/images/source/gallery/`, optimisées
+vers `public/images/opt/gallery/`) sont des photos de plats du propriétaire,
+reprises du site actuel. Chaque image porte déjà une étiquette au nom du plat.
+Actifs du client — aucune attribution externe requise. Le manifeste correspondant
+est exporté par `gallery` dans `src/content/images.ts`.

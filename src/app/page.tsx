@@ -1,3 +1,4 @@
+import { Gallery } from "@/components/Gallery";
 import { Hero } from "@/components/Hero";
 import { LocationsSection } from "@/components/LocationsSection";
 import { MenuHighlights } from "@/components/MenuHighlights";
@@ -9,6 +10,7 @@ export default function Home() {
   return (
     <main id="contenu">
       <Hero />
+      <Gallery />
       <MenuHighlights />
       <StorySection />
       <OrderCards />

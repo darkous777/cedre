@@ -31,7 +31,7 @@ export const images = {
     height: 900,
     credit: {
       photographer: "Restaurant Le Cèdre",
-      sourceUrl: "http://restaurantlecedre.ca/images/banner01.jpg",
+      sourceUrl: "public/images/client-originals/bann.png",
       license: "Actif client existant",
     },
   },
@@ -122,3 +122,113 @@ export const images = {
 } as const satisfies Record<string, ImageAsset>;
 
 export type ImageKey = keyof typeof images;
+
+export type GalleryImage = ImageAsset & {
+  /** Dish name — used for the visually-hidden caption and figure semantics. */
+  title: string;
+};
+
+const CLIENT_ASSET = "Actif client existant";
+
+// Photos de plats fournies par le propriétaire (site actuel). Chaque image porte
+// déjà une étiquette au nom du plat; l'ordre va des plats principaux vers les
+// entrées, accompagnements et desserts. Optimisées par `npm run images` depuis
+// public/images/source/gallery/ (voir scripts/optimize-images.mjs).
+export const gallery: GalleryImage[] = [
+  {
+    title: "Assiette shawarma bœuf",
+    file: "/images/opt/gallery/assiette-shawarma-640.webp",
+    alt: "Assiette de shawarma au bœuf sur riz, avec patates libanaises et salade fraîche",
+    width: 640,
+    height: 460,
+    credit: { photographer: "Restaurant Le Cèdre", sourceUrl: "", license: CLIENT_ASSET },
+  },
+  {
+    title: "Assiette shish taouk",
+    file: "/images/opt/gallery/assiette-shish-taouk-640.webp",
+    alt: "Assiette de shish taouk effiloché sur riz, patates libanaises et légumes",
+    width: 640,
+    height: 460,
+    credit: { photographer: "Restaurant Le Cèdre", sourceUrl: "", license: CLIENT_ASSET },
+  },
+  {
+    title: "Brochette de poulet",
+    file: "/images/opt/gallery/brochette-poulet-640.webp",
+    alt: "Brochette de poulet grillée sur riz avec patates libanaises, taboulé et salade",
+    width: 640,
+    height: 460,
+    credit: { photographer: "Restaurant Le Cèdre", sourceUrl: "", license: CLIENT_ASSET },
+  },
+  {
+    title: "Assiette merguez",
+    file: "/images/opt/gallery/assiette-merguez-640.webp",
+    alt: "Assiette de saucisses merguez grillées, patates libanaises et salade",
+    width: 640,
+    height: 460,
+    credit: { photographer: "Restaurant Le Cèdre", sourceUrl: "", license: CLIENT_ASSET },
+  },
+  {
+    title: "Sandwich shish taouk",
+    file: "/images/opt/gallery/shish-taouk-sandwich-640.webp",
+    alt: "Sandwich shish taouk roulé dans un pita, servi en trio avec patates et boisson",
+    width: 640,
+    height: 460,
+    credit: { photographer: "Restaurant Le Cèdre", sourceUrl: "", license: CLIENT_ASSET },
+  },
+  {
+    title: "Assiette falafel",
+    file: "/images/opt/gallery/assiette-falafel-640.webp",
+    alt: "Assiette de falafels avec salade de légumes frais, pois chiches et sauce tahini",
+    width: 640,
+    height: 460,
+    credit: { photographer: "Restaurant Le Cèdre", sourceUrl: "", license: CLIENT_ASSET },
+  },
+  {
+    title: "Feuilles de vigne",
+    file: "/images/opt/gallery/feuilles-de-vigne-640.webp",
+    alt: "Feuilles de vigne farcies servies avec kebbé, hommos et salade",
+    width: 640,
+    height: 460,
+    credit: { photographer: "Restaurant Le Cèdre", sourceUrl: "", license: CLIENT_ASSET },
+  },
+  {
+    title: "Moussaka",
+    file: "/images/opt/gallery/moussaka-640.webp",
+    alt: "Moussaka libanaise d'aubergines et pois chiches mijotés à la tomate",
+    width: 640,
+    height: 460,
+    credit: { photographer: "Restaurant Le Cèdre", sourceUrl: "", license: CLIENT_ASSET },
+  },
+  {
+    title: "Salade taboulé",
+    file: "/images/opt/gallery/taboule-640.webp",
+    alt: "Taboulé frais au persil, tomates, menthe et boulgour",
+    width: 640,
+    height: 460,
+    credit: { photographer: "Restaurant Le Cèdre", sourceUrl: "", license: CLIENT_ASSET },
+  },
+  {
+    title: "Patates libanaises",
+    file: "/images/opt/gallery/patates-libanaises-640.webp",
+    alt: "Patates libanaises rôties et assaisonnées, servies avec une sauce à l'ail",
+    width: 640,
+    height: 460,
+    credit: { photographer: "Restaurant Le Cèdre", sourceUrl: "", license: CLIENT_ASSET },
+  },
+  {
+    title: "Sauces et condiments",
+    file: "/images/opt/gallery/sauces-640.webp",
+    alt: "Sauces à l'ail et piquante, avec cornichons, navets marinés et légumes",
+    width: 640,
+    height: 460,
+    credit: { photographer: "Restaurant Le Cèdre", sourceUrl: "", license: CLIENT_ASSET },
+  },
+  {
+    title: "Baklawa",
+    file: "/images/opt/gallery/baklawa-640.webp",
+    alt: "Assortiment de baklawas croustillants aux noix et pistaches",
+    width: 640,
+    height: 460,
+    credit: { photographer: "Restaurant Le Cèdre", sourceUrl: "", license: CLIENT_ASSET },
+  },
+];

@@ -23,13 +23,19 @@ remplacer par des valeurs plausibles sans confirmation du propriétaire.
 
 ## Photos
 
-- `public/images/source/hero.jpg` et `public/images/source/salle.jpg` — photos
-  réelles importées depuis le site actuel.
+- `public/images/source/hero.jpg` — bannière fournie par le propriétaire
+  (comptoir de mezzés/falafels), original conservé en
+  `public/images/client-originals/bann.png`.
+- `public/images/source/salle.jpg` — photo réelle importée depuis le site actuel.
 - `public/images/source/mezze.jpg`, `grillades.jpg`, `falafel.jpg`,
   `salades.jpg`, `baklava.jpg` et `pita.jpg` — photos temporaires Unsplash;
   remplacer par des photos fournies par le propriétaire si disponibles.
 - `public/images/client-originals/` — actifs originaux du site actuel conservés
   comme référence.
+- `public/images/source/gallery/` — photos de plats du propriétaire alimentant
+  la section galerie « Nos plats ». Elles portent une étiquette (nom du plat)
+  incrustée; si le propriétaire fournit des photos sans étiquette, les remplacer
+  en gardant le même nom de fichier puis relancer `npm run images`.
 
 ## Sortie attendue du grep placeholders
 

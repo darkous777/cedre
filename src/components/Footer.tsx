@@ -12,6 +12,7 @@ export function Footer() {
         </Link>
         <nav aria-label="Navigation de pied de page">
           <Link href="/menu">Menu</Link>
+          <Link href="/#galerie">Galerie</Link>
           <Link href="/#commander">Commander</Link>
           <Link href="/#succursales">Succursales</Link>
           <a href={`mailto:${site.email}`}>{site.email}</a>

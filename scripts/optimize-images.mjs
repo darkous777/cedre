@@ -7,7 +7,7 @@
 // Swap procedure: replace the file in source/ keeping the same name, run
 // `npm run images`, done. See README.md.
 import { existsSync } from "node:fs";
-import { mkdir, writeFile } from "node:fs/promises";
+import { mkdir, readdir, writeFile } from "node:fs/promises";
 import path from "node:path";
 import sharp from "sharp";
 
@@ -15,8 +15,17 @@ const ROOT = path.resolve(import.meta.dirname, "..");
 const SOURCE_DIR = path.join(ROOT, "public/images/source");
 const OPT_DIR = path.join(ROOT, "public/images/opt");
 const FALLBACK_DIR = path.join(ROOT, "public/images/fallback");
+const GALLERY_SOURCE_DIR = path.join(SOURCE_DIR, "gallery");
+const GALLERY_OPT_DIR = path.join(OPT_DIR, "gallery");
+
+// Gallery = the owner's own promotional dish photos (public/images/source/gallery/*.jpg).
+// Unlike the hero/story slots, these keep their native aspect ratio (no crop — a
+// name tag sits in the bottom corner) and are never upscaled beyond the source.
+const GALLERY_WIDTH = 640;
 
 const QUALITY = 78;
+// The hero is the full-bleed LCP banner — encode it richer than the thumbnails.
+const HERO_QUALITY = 90;
 const LARGE_WIDTH = 1600;
 const SMALL_WIDTH = 800;
 
@@ -92,24 +101,48 @@ async function optimizeSlot(key, aspect) {
     console.warn(`! ${key}: no source, wrote fallback SVG`);
     return;
   }
+  const quality = key === "hero" ? HERO_QUALITY : QUALITY;
   for (const width of [LARGE_WIDTH, SMALL_WIDTH]) {
     const height = Math.round(width / aspect);
     await sharp(source)
       .resize(width, height, { fit: "cover", position: "attention" })
-      .webp({ quality: QUALITY })
+      .webp({ quality })
       .toFile(path.join(OPT_DIR, `${key}-${width}.webp`));
   }
   console.log(`✓ ${key} → ${key}-1600.webp, ${key}-800.webp`);
 }
 
+async function optimizeGallery() {
+  if (!existsSync(GALLERY_SOURCE_DIR)) return;
+  const files = (await readdir(GALLERY_SOURCE_DIR))
+    .filter((name) => name.toLowerCase().endsWith(".jpg"))
+    .sort();
+  for (const file of files) {
+    const source = path.join(GALLERY_SOURCE_DIR, file);
+    const slug = path.basename(file, path.extname(file));
+    const { width = GALLERY_WIDTH } = await sharp(source).metadata();
+    // Never upscale small source photos; cap the display width at the source width.
+    const target = Math.min(GALLERY_WIDTH, width);
+    await sharp(source)
+      .resize({ width: target, withoutEnlargement: true })
+      .webp({ quality: QUALITY })
+      .toFile(path.join(GALLERY_OPT_DIR, `${slug}-${target}.webp`));
+    console.log(`✓ gallery/${slug} → ${slug}-${target}.webp`);
+  }
+}
+
 async function main() {
   await Promise.all(
-    [OPT_DIR, FALLBACK_DIR].map((dir) => mkdir(dir, { recursive: true })),
+    [OPT_DIR, FALLBACK_DIR, GALLERY_OPT_DIR].map((dir) =>
+      mkdir(dir, { recursive: true }),
+    ),
   );
 
   for (const [key, aspect] of Object.entries(SLOTS)) {
     await optimizeSlot(key, aspect);
   }
+
+  await optimizeGallery();
 
   const favicons = [
     { file: "apple-touch-icon.png", size: 180 },

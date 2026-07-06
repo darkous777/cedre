@@ -1,14 +1,6 @@
 import Image from "next/image";
 import { images, type ImageAsset, type ImageKey } from "@/content/images";
-
-const isGitHubPages = process.env.GITHUB_PAGES === "true";
-const repositoryName = process.env.GITHUB_REPOSITORY?.split("/")[1] ?? "cedre";
-const basePath = isGitHubPages ? `/${repositoryName}` : "";
-
-function withBasePath(src: string) {
-  if (!basePath || !src.startsWith("/")) return src;
-  return `${basePath}${src}`;
-}
+import { withBasePath } from "@/lib/basePath";
 
 export function ImageSlot({
   slot,
@@ -24,7 +16,10 @@ export function ImageSlot({
   fill?: boolean;
 }) {
   const image: ImageAsset = images[slot];
-  const source = withBasePath(fill ? (image.fileSmall ?? image.file) : image.file);
+  // Full-bleed slots (fill) span the whole viewport, so they must serve the
+  // large variant — the 800w fileSmall looks soft stretched across a wide/retina
+  // screen. fileSmall stays available for genuinely small, constrained layouts.
+  const source = withBasePath(image.file);
 
   if (fill) {
     return (
